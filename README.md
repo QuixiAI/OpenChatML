@@ -134,7 +134,7 @@ OpenChatML supports function calling, allowing the model to interact with extern
 
 ### 8.1 Function Signature
 
-To enable function calling, the available functions or tools should be provided to the model within the `<tools>` and `</tools>` XML tags in the system message. The function signature is represented as a JSON object with the following properties:
+To enable function calling, the available functions or tools should be provided to the model after the `<|function_list|>` tag in the system message. The function signature is represented as a JSON object with the following properties:
 
 - `type`: Indicates the type of the tool, which should be "function".
 - `function`: An object representing the function details, containing:
@@ -166,7 +166,7 @@ Example function signature:
 
 ### 8.2 Function Call
 
-To make a function call, the model should generate a JSON object within the `<tool_call>` and `</tool_call>` XML tags. The JSON object should follow the Pydantic model schema:
+To make a function call, the model should generate a JSON object after the `<|function_call|>` tag. The JSON object should follow the Pydantic model schema:
 
 ```json
 {
@@ -195,7 +195,7 @@ Example function call:
 
 ### 8.3 Function Response
 
-After executing the function call, the response should be passed back to the model within the `<tool_response>` and `</tool_response>` XML tags. The response should be a JSON object containing the function name and the content of the response.
+After executing the function call, the response should be passed back to the model aftert the `<|function_output|>` tag. The response should be a JSON object containing the function name and the content of the response.
 
 Example function response:
 
@@ -230,7 +230,7 @@ Here's an example conversation demonstrating function calling in OpenChatML:
 
 ```
 [BOS]<|im_start|>system
-You are a function calling AI model. You are provided with function signatures within <tools></tools> XML tags. You may call one or more functions to assist with the user query. Don't make assumptions about what values to plug into functions. Here are the available tools:
+You are a function calling AI model. You are provided with function signatures after the `<|function_list|>` tag. You may call one or more functions to assist with the user query. Don't make assumptions about what values to plug into functions. Here are the available tools:
 <|function_list|>
 {
   "type": "function",
@@ -248,7 +248,7 @@ You are a function calling AI model. You are provided with function signatures w
     }
   }
 }
-<|function_list|>
+
 Use the following pydantic model json schema for each tool call you will make:
 {
   "title": "FunctionCall",
@@ -265,7 +265,7 @@ Use the following pydantic model json schema for each tool call you will make:
   },
   "required": ["arguments", "name"]
 }
-For each function call return a json object with function name and arguments within <tool_call></tool_call> XML tags as follows:
+For each function call return a json object with function name and arguments after the <|function_call|> tag as follows:
 <|function_call|>
 {"arguments": <args-dict>, "name": <function-name>}
 <|im_end|>
