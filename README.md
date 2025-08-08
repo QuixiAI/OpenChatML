@@ -1,4 +1,4 @@
-# **OpenChatML 2.2 — Specification (Harmony‑Compatible)**
+# **OpenChatML 2.2 — Specification**
 
 *Release Candidate • 2025‑08‑08*
 
